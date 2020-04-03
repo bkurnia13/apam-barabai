@@ -68,30 +68,39 @@ class Menu extends CI_Controller {
 
     public function editMenu()
     {
-        if( !isset($_POST['is_active']) ) { $_POST['is_active'] = 0; }
-        if( !isset($_POST['submenu']) ) { $_POST['submenu'] = 0; }
-        
-        $data = [
-            'group_id' => $_POST['menu_group'],
-            'menu_name' => $_POST['menu'],
-            'icon' => $_POST['icon'],
-            'submenu' => $_POST['submenu'],
-            'is_active' => $_POST['is_active']
-        ];
+        $this->form_validation->set_rules('menu', 'Nama Menu', 'required|trim');
+        $this->form_validation->set_rules('menu_group', 'Grup Menu', 'required');
 
-        $update = $this->db->update('menu_level_1', $data, [ 'id' => $_POST['id'] ]);
-        if( $update ) {
-            $this->session->set_flashdata('notifikasi', '<script>updateSuccessToast()</script>');
+        if( $this->form_validation->run() == false ) {
+            $this->session->set_flashdata('notifikasi', '<script>showDangerToast()</script>');
             redirect('menu');
         } else {
-            $this->session->set_flashdata('notifikasi', '<script>updateFailToast()</script>');
-            redirect('menu');
+            if( !isset($_POST['is_active']) ) { $_POST['is_active'] = 0; }
+            if( !isset($_POST['submenu']) ) { $_POST['submenu'] = 0; }
+            
+            $data = [
+                'group_id' => $_POST['menu_group'],
+                'menu_name' => $_POST['menu'],
+                'icon' => $_POST['icon'],
+                'submenu' => $_POST['submenu'],
+                'is_active' => $_POST['is_active']
+            ];
+    
+            $update = $this->db->update('menu_level_1', $data, [ 'id' => $_POST['id'] ]);
+            if( $update ) {
+                $this->session->set_flashdata('notifikasi', '<script>updateSuccessToast()</script>');
+                redirect('menu');
+            } else {
+                $this->session->set_flashdata('notifikasi', '<script>updateFailToast()</script>');
+                redirect('menu');
+            }
         }
     }
 
     public function hapus($id)
     {
         $this->db->delete('menu_level_1', ['id' => $id]);
+        $this->db->delete('menu_level_2', ['menu_id' => $id]);
 
         if( !$this->db->affected_rows() ) {
             $this->session->set_flashdata('notifikasi', '<script>deleteFailToast()</script>');
