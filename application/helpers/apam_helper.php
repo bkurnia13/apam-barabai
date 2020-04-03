@@ -7,7 +7,7 @@ function cek_login()
     if( !$ci->session->userdata('username') ) {
         redirect('auth');
     } else {
-        $url = $ci->uri->uri_string();
+        $url = $ci->uri->segment(1);
         $role_id = $ci->session->userdata('role_id');
 
         if ( $role_id != 1 ) {
