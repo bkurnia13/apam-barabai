@@ -3,8 +3,12 @@
     $(document).ready(function() {
         $("#dropper-default").dateDropper({
             dropWidth: 200,
+            format: "l, m F Y",
             dropPrimaryColor: "#1abc9c",
-            dropBorder: "1px solid #1abc9c"
+            dropBorder: "1px solid #1abc9c",
+            minYear: "2020",
+            maxYear: "2030",
+            yearsRange: "1"
         }),
         $("#dropper-animation").dateDropper({
             dropWidth: 200,
@@ -100,37 +104,6 @@
         });
         $('#timepicker').datetimepicker({
             format: 'LT'
-        });
-        $('.demo').each( function() {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr('data-control') || 'hue',
-                defaultValue: $(this).attr('data-defaultValue') || '',
-                format: $(this).attr('data-format') || 'hex',
-                keywords: $(this).attr('data-keywords') || '',
-                inline: $(this).attr('data-inline') === 'true',
-                letterCase: $(this).attr('data-letterCase') || 'lowercase',
-                opacity: $(this).attr('data-opacity'),
-                position: $(this).attr('data-position') || 'bottom left',
-                swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
-                change: function(value, opacity) {
-                    if( !value ) return;
-                    if( opacity ) value += ', ' + opacity;
-                    if( typeof console === 'object' ) {
-                        console.log(value);
-                    }
-                },
-                theme: 'bootstrap'
-            });
-
         });
     })
 })(jQuery);
